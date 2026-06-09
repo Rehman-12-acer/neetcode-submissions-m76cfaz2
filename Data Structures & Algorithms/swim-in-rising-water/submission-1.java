@@ -1,0 +1,45 @@
+class Solution {
+    public int swimInWater(int[][] grid) {
+        int n= grid.length;
+        int minH=grid[0][0],maxH=grid[0][0];
+        boolean [][] visit= new boolean[n][n];
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                minH=Math.min(minH,grid[i][j]);
+                maxH=Math.max(maxH,grid[i][j]);
+            }
+        }
+        for(int t=minH;t<maxH;t++)
+        {
+            if(dfs(grid,visit,0,0,t))
+            {
+                return t;
+            }
+            for(int r=0;r<n;r++)
+            {
+                Arrays.fill(visit[r],false);
+            }
+            
+        }
+        return maxH;
+    }
+    private boolean dfs(int [][] grid,boolean [][] visit,int r, int c,int t)
+    {
+        if(r<0||c<0||r>=grid.length||c>=grid.length||visit[r][c]||t<grid[r][c])
+        {
+            return false;
+        }
+        if(r==grid.length-1&&c==grid.length-1)
+        {
+            return true;
+        }
+        visit[r][c]=true;
+        return dfs(grid,visit,r+1,c,t)||
+               dfs(grid,visit,r-1,c,t)||
+               dfs(grid,visit,r,c+1,t)||
+               dfs(grid,visit,r,c-1,t);
+    }
+}
